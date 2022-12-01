@@ -5,3 +5,5 @@ statsmodels
 matplotlib
 prophet
 pmdarima
+dtaidistance
+openpyxl
