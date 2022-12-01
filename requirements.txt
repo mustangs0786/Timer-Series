@@ -3,5 +3,5 @@ streamlit
 plotly
 statsmodels
 matplotlib
-pystan
-fbprophet
+prophet
+
