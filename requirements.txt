@@ -4,4 +4,4 @@ plotly
 statsmodels
 matplotlib
 prophet
-
+pmdarima
