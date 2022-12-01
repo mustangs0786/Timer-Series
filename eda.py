@@ -7,7 +7,9 @@ from plotly.subplots import make_subplots
 
 def eda(Date_column,Target_column,dataframe):
     st.markdown("<h3 style='text-align: center; color: gray;'>Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
-    dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
+    dataframe[Date_column] = pd.to_datetime(dataframe[Date_column]).dt.date
+    
+    dataframe = dataframe.sort_values(by=Date_column)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=dataframe[Date_column], y=dataframe[Target_column],
                     mode='lines+markers',
@@ -40,7 +42,7 @@ def eda(Date_column,Target_column,dataframe):
     st.markdown("<h3 style='text-align: center; color: gray;'>Month-Yearly Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
 def month_year_eda(Date_column,Target_column,dataframe):
     try:
-        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
+        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])#.dt.date
         dataframe['Month'] = dataframe[Date_column].dt.month
         dataframe['Year'] = dataframe[Date_column].dt.year
         dataframe = dataframe.groupby(['Year','Month'],as_index=False)[Target_column].sum()
@@ -74,7 +76,8 @@ def month_year_eda(Date_column,Target_column,dataframe):
                                 showlegend=False,)
         fig1.update_xaxes(tickangle=30)
         st.plotly_chart(fig1, use_container_width = True)
-    except Exception:
+    except Exception as e:
+        st.text(e)
         pass
     st.warning(" ") 
 
@@ -121,7 +124,7 @@ def year_eda(Date_column,Target_column,dataframe):
 def trend_seasonality_decompose(Date_column,Target_column,dataframe):
     try:
         st.markdown("<h3 style='text-align: center; color: gray;'>trend_seasonality_decompose of Target Column</h3>", unsafe_allow_html=True)
-        # dataframe[Date_column] = pd.to_datetime(dataframe[Date_column], format='%d/%m/%y %H:%M:%S').dt.strftime('%Y-%m-%d')
+        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])#.dt.date
         dataframe.index = dataframe[Date_column]
         dataframe = dataframe[Target_column]
         # st.dataframe(dataframe)
@@ -129,7 +132,7 @@ def trend_seasonality_decompose(Date_column,Target_column,dataframe):
         decompose_result = seasonal_decompose(dataframe)
         trend_estimate    = decompose_result.trend
         periodic_estimate = decompose_result.seasonal
-        # residual          = decompose_result.resid
+        plt.rcParams["figure.figsize"] = (10,7)
         st.pyplot(fig=decompose_result.plot())
     
     except Exception:
