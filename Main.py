@@ -58,7 +58,7 @@ if __name__ == "__main__":
                             ('None','Generate EDA Report', 'Ready for Modelling'))
                 st.sidebar.error(" ")
                 if option == 'Generate EDA Report':
-                    eda(Date_column,Target_column,dataframe)
+                    dataframe = eda(Date_column,Target_column,dataframe)
                     month_year_eda(Date_column,Target_column,dataframe)
                     year_eda(Date_column,Target_column,dataframe)
                     trend_seasonality_decompose(Date_column,Target_column,dataframe)
