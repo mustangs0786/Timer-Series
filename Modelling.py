@@ -14,8 +14,9 @@ import numpy as np
 
 def train_test_split(dataframe,Date_column):
     # try:
+    st.markdown("<h3 style='text-align: center; color: gray;'>Training and Test data Split </h3>", unsafe_allow_html=True)
     try:
-        st.markdown("<h3 style='text-align: center; color: gray;'>Training and Test data Split </h3>", unsafe_allow_html=True)
+        
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column]).dt.date
     except Exception:
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
@@ -27,12 +28,12 @@ def train_test_split(dataframe,Date_column):
         train_df = dataframe[(dataframe[Date_column]>=Min_date) & (dataframe[Date_column]<=Max_date)]
         
         train_df = train_df.sort_values(by=Date_column)
-
+    
         # return train_df,flag
     with tab2:
-        Min_date = st.date_input('Enter Test Starting Date',train_df[Date_column].max(),min_value=train_df[Date_column].min(), max_value=dataframe[Date_column].max())
+        Min_date = st.date_input('Enter Test Starting Date',train_df[Date_column].max(),min_value=train_df[Date_column].max(), max_value=dataframe[Date_column].max())
         Max_date = st.date_input('Enter Test End Date',dataframe[Date_column].max(),min_value=train_df[Date_column].min(), max_value=dataframe[Date_column].max())
-        test_df = dataframe[(dataframe[Date_column]>=Min_date) & (dataframe[Date_column]<=Max_date)]
+        test_df = dataframe[(dataframe[Date_column]>Min_date) & (dataframe[Date_column]<=Max_date)]
         test_df = test_df.sort_values(by=Date_column)
     return train_df,test_df
     # except Exception as e :
