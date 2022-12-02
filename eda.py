@@ -7,7 +7,10 @@ from plotly.subplots import make_subplots
 
 def eda(Date_column,Target_column,dataframe):
     st.markdown("<h3 style='text-align: center; color: gray;'>Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
-    dataframe[Date_column] = pd.to_datetime(dataframe[Date_column]).dt.date
+    try:        
+        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
+    except Exception:
+        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column]).dt.date
     
     dataframe = dataframe.sort_values(by=Date_column)
     fig = go.Figure()
@@ -40,6 +43,7 @@ def eda(Date_column,Target_column,dataframe):
 
     st.warning(" ")
     st.markdown("<h3 style='text-align: center; color: gray;'>Month-Yearly Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
+    return dataframe
 def month_year_eda(Date_column,Target_column,dataframe):
     try:
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])#.dt.date
@@ -124,7 +128,7 @@ def year_eda(Date_column,Target_column,dataframe):
 def trend_seasonality_decompose(Date_column,Target_column,dataframe):
     try:
         st.markdown("<h3 style='text-align: center; color: gray;'>trend_seasonality_decompose of Target Column</h3>", unsafe_allow_html=True)
-        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])#.dt.date
+        dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
         dataframe.index = dataframe[Date_column]
         dataframe = dataframe[Target_column]
         # st.dataframe(dataframe)
@@ -135,5 +139,6 @@ def trend_seasonality_decompose(Date_column,Target_column,dataframe):
         plt.rcParams["figure.figsize"] = (10,7)
         st.pyplot(fig=decompose_result.plot())
     
-    except Exception:
+    except Exception as e:
+        # st.text(e)
         pass
