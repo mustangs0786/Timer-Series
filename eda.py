@@ -88,7 +88,7 @@ def month_year_eda(Date_column,Target_column,dataframe):
 def year_eda(Date_column,Target_column,dataframe):
     st.markdown("<h3 style='text-align: center; color: gray;'>Yearly Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
     try:
-        st.dataframe(dataframe)
+#         st.dataframe(dataframe)
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
         dataframe['Month_level'] = dataframe[Date_column].dt.month
         dataframe['Year_level'] = dataframe[Date_column].dt.year
