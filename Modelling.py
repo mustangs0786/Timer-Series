@@ -35,6 +35,7 @@ def train_test_split(dataframe,Date_column):
         Max_date = st.date_input('Enter Test End Date',dataframe[Date_column].max(),min_value=train_df[Date_column].min(), max_value=dataframe[Date_column].max())
         test_df = dataframe[(dataframe[Date_column]>Min_date) & (dataframe[Date_column]<=Max_date)]
         test_df = test_df.sort_values(by=Date_column)
+
     return train_df,test_df
     # except Exception as e :
     #     st.text(e)
@@ -99,13 +100,13 @@ def auto_arima_model(forecast,train_df,test_df,Target_column,Date_column):
 
 def rf_modeling(forecast,train_df,test_df,Target_column,Date_column):
     train_df['ds'] = pd.to_datetime(train_df['ds'])
-    train_df['Month'] = train_df['ds'].dt.month
-    train_df['quarter'] = train_df['ds'].dt.quarter
-    X_train,y_train = train_df[['Month','quarter']],train_df['y']
+    train_df['Month_level'] = train_df['ds'].dt.month
+    train_df['quarter_level'] = train_df['ds'].dt.quarter
+    X_train,y_train = train_df[['Month_level','quarter_level']],train_df['y']
 
     test_df['ds'] = pd.to_datetime(test_df['ds'])
-    test_df['Month'] = test_df['ds'].dt.month
-    test_df['quarter'] = test_df['ds'].dt.quarter
+    test_df['Month_level'] = test_df['ds'].dt.month
+    test_df['quarter_level'] = test_df['ds'].dt.quarter
 
 
     # Number of trees in random forest
@@ -133,7 +134,7 @@ def rf_modeling(forecast,train_df,test_df,Target_column,Date_column):
     rf_RandomGrid.fit(X_train, y_train)
     rf_Model = RandomForestRegressor(**rf_RandomGrid.best_params_)
     rf_Model.fit(X_train, y_train)
-    rf_pred = rf_Model.predict(test_df[['Month','quarter']])
+    rf_pred = rf_Model.predict(test_df[['Month_level','quarter_level']])
     forecast['Rf_pred'] = list(rf_pred)
     forecast['actual'] = list(test_df['y'])
 
