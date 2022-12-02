@@ -47,10 +47,10 @@ def eda(Date_column,Target_column,dataframe):
 def month_year_eda(Date_column,Target_column,dataframe):
     try:
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])#.dt.date
-        dataframe['Month'] = dataframe[Date_column].dt.month
-        dataframe['Year'] = dataframe[Date_column].dt.year
-        dataframe = dataframe.groupby(['Year','Month'],as_index=False)[Target_column].sum()
-        dataframe['Month_Year'] = dataframe['Year'].astype('str')+"-"+dataframe['Month'].astype('str')
+        dataframe['Month_level'] = dataframe[Date_column].dt.month
+        dataframe['Year_level'] = dataframe[Date_column].dt.year
+        dataframe = dataframe.groupby(['Year_level','Month_level'],as_index=False)[Target_column].sum()
+        dataframe['Month_Year'] = dataframe['Year_level'].astype('str')+"-"+dataframe['Month_level'].astype('str')
         dataframe['Month_Year'] = pd.to_datetime(dataframe['Month_Year'], format="%Y-%m")
         dataframe = dataframe.groupby(['Month_Year'],as_index=False)[Target_column].sum()
         fig1 = go.Figure()
@@ -88,13 +88,13 @@ def month_year_eda(Date_column,Target_column,dataframe):
 def year_eda(Date_column,Target_column,dataframe):
     st.markdown("<h3 style='text-align: center; color: gray;'>Yearly Chart of Target Column Over Date column </h3>", unsafe_allow_html=True)
     try:
-        # st.dataframe(dataframe)
+        st.dataframe(dataframe)
         dataframe[Date_column] = pd.to_datetime(dataframe[Date_column])
-        dataframe['Month'] = dataframe[Date_column].dt.month
-        dataframe['Year'] = dataframe[Date_column].dt.year
-        dataframe = dataframe.groupby(['Year'],as_index=False)[Target_column].sum()
+        dataframe['Month_level'] = dataframe[Date_column].dt.month
+        dataframe['Year_level'] = dataframe[Date_column].dt.year
+        dataframe = dataframe.groupby(['Year_level'],as_index=False)[Target_column].sum()
         fig2 = go.Figure()
-        fig2.add_trace(go.Scatter(x=dataframe['Year'], y=dataframe[Target_column],
+        fig2.add_trace(go.Scatter(x=dataframe['Year_level'], y=dataframe[Target_column],
                         mode='lines+markers',
                         name='lines+markers'))
 
