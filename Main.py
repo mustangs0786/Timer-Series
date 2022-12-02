@@ -65,6 +65,9 @@ if __name__ == "__main__":
                 elif option == 'Ready for Modelling':
                     train_df,test_df = train_test_split(dataframe,Date_column)
                     if st.button('Model_Training'):
+                        if test_df.shape[0]<1:
+                            st.error('please select Test Data')
+                            st.stop()
                         train_test_eda(train_df,test_df,Target_column,Date_column)
                         forecast,train_df,test_df = fbprophet_model(train_df,test_df,Target_column,Date_column)
                         forecast,train_df,test_df = auto_arima_model(forecast,train_df,test_df,Target_column,Date_column)
